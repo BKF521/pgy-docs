@@ -6,6 +6,11 @@ const config = {
   tagline: 'User guides, developer documentation, and module specifications',
   favicon: 'img/favicon.ico',
 
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+
   future: {
     v4: true,
   },
