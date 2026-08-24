@@ -1,0 +1,8 @@
+{
+  "label": "Document Rendering & Preview Engine",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Technical guide comparing native HTML template rendering vs client-side DOCX document previewing."
+  }
+}
