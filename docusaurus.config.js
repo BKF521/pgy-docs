@@ -15,7 +15,7 @@ const config = {
     v4: true,
   },
 
-  url: 'https://docs.yourdomain.com',
+  url: 'https://docs.gopgy.org.my',
   baseUrl: '/',
   onBrokenLinks: 'throw',
 
