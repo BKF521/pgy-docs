@@ -1,8 +1,9 @@
 {
   "label": "PHPWord Document Templates (ARP)",
-  "position": 2,
+  "position": 3,
   "link": {
     "type": "generated-index",
     "description": "Technical guide for generating Word (.docx) and PDF reports using PHPWord TemplateProcessor."
   }
 }
+
