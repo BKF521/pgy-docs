@@ -1,0 +1,8 @@
+{
+  "label": "PhpSpreadsheet Import (JYT)",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Technical documentation for Excel parsing, state-machine block scanning, and matrix data extraction."
+  }
+}

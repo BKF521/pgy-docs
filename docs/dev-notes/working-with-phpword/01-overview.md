@@ -1,4 +1,4 @@
-# PHPWord Document Templates Overview
+# PhpWord Document Templates Overview
 
 The application utilizes **PHPWord `TemplateProcessor`** (`phpoffice/phpword`) to load pre-formatted Microsoft Word (`.docx`) templates from the `docx_template/` directory, substitute `${placeholder}` variable tags, inject dynamic table rows, decode base64 digital signatures into binary stream images, and output final `.docx` or web-rendered documents.
 
