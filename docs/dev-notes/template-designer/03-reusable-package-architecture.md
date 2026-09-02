@@ -9,7 +9,7 @@ This developer note describes how the Canvas Template Designer is structured as 
 The Template Designer is built to decouple the UI canvas from project-specific database models. This allows the editor and output renderer to be packaged or re-used across different projects or Laravel applications with zero core code modifications.
 
 ```mermaid
-graph TD
+flowchart TD
     A["Host Laravel Controller<br/>Defines $availableSystemVariables & passes to View"] --> B["designer_raw.blade.php UI<br/>- Dynamic select id='dataFieldDdl'<br/>- Exposes window.AVAILABLE_SYSTEM_VARIABLES"]
     B --> C["resources/js/designer/* Modules<br/>- Autocomplete Engine (@ for System, $ for Canvas Tags)<br/>- Script Tool Modal with Tab Indentation"]
     C --> D["render.blade.php Interpreter<br/>- Evaluates Math & Concatenation Formulas ($evalExpr)<br/>- Evaluates HIDE, SHOW, SET COLOR/BGCOLOR/VALUE ($execute)"]
@@ -57,6 +57,8 @@ public function edit(Request $request, $id)
 ## 2. View Component Integration
 
 In `designer_raw.blade.php`, the dropdown builds dynamically without hardcoded `@if` rules:
+
+![Component View Integration Canvas](../../placeholder.jpg)
 
 ```blade
 <select class="property-input" id="dataFieldDdl" onchange="onPlaceholderFieldChange()">
@@ -132,3 +134,12 @@ The `render.blade.php` engine automatically handles:
 - Variable interpolation (`@user.name`, `@user.score`)
 - Canvas object formulas (`Str($A) + " - Passed"`)
 - Dynamic Script rules (`HIDE $el7`, `SET $el7 COLOR #28a745`, `SET $el7 VALUE "PASSED"`)
+
+---
+
+## 5. Related Documentation & Guides
+
+- **[Product Overview & 2-JSON Data Fusion Engine](./01-overview.md)** — Architectural introduction and JSON schema details.
+- **[Frontend Module Architecture](./05-frontend-module-architecture.md)** — Component structure of the visual canvas editor.
+- **[HTML Template Renderer vs DOCX Preview](../document-rendering/01-renderer-vs-docx-preview.md)** — Runtime render engines compared.
+

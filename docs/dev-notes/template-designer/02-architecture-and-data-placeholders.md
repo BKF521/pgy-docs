@@ -9,7 +9,7 @@ This guide details the internal rendering engine (`templates/render.blade.php`),
 :::info[Developer-Oriented Tooling]
 Although the Template Designer presents a visual UI that generates JSON on the client side, it is **intended for Developers**. 
 
-End-users generally do not know the underlying database schemas, Controller data structures, or mapped variable paths (e.g., `user.name_en`, `position.name`, `date.signed_at`). Developers design templates by binding specific placeholder keys matching the Controller's data mapping (unless an attribute dictionary is exposed in the future).
+End-users generally do not know the underlying database schemas, Controller data structures, or mapped variable paths (e.g., `user.name_en`, `position.name`, `date.signed_at`). Developers design templates by binding specific placeholder keys matching the Controller's data mapping.
 :::
 
 ---
@@ -41,6 +41,8 @@ sequenceDiagram
 
 The rendering engine evaluates placeholders using Laravel's `data_get($data, $field)` helper:
 
+![Placeholder Binding in Canvas UI](../../placeholder.jpg)
+
 ```php
 $field = $el['dataField'] ?? $el['expr'] ?? '';
 $val   = data_get($data ?? [], $field, null);
@@ -63,12 +65,12 @@ $val   = data_get($data ?? [], $field, null);
 `render.blade.php` dynamically inspects the resolved `$val` to determine whether to render text, an image/signature, or a multi-icon flexbox grid:
 
 ```mermaid
-graph TD
+flowchart TD
     A["Resolved Placeholder Value ($val)"] --> B{"Is Array?<br/>is_array($val)"}
-    B -- Yes --> C["Render Flexbox Image Grid<br/><div class='badge-grid'><img ... /></div>"]
-    B -- No --> D{"Is Image / Signature?<br/>Base64 / URL / 'signature' key"}
-    D -- Yes --> E["Render Fitted Image<br/><img src='$val' class='el-img' />"]
-    D -- No --> F["Render Standard Text / Formula<br/><div class='el-content'>$val</div>"]
+    B -->|"Yes"| C["Render Flexbox Image Grid<br/><div class='badge-grid'><img ... /></div>"]
+    B -->|"No"| D{"Is Image / Signature?<br/>Base64 / URL / 'signature' key"}
+    D -->|"Yes"| E["Render Fitted Image<br/><img src='$val' class='el-img' />"]
+    D -->|"No"| F["Render Standard Text / Formula<br/><div class='el-content'>$val</div>"]
 ```
 
 ### Rendering Pipeline Logic:
@@ -112,3 +114,12 @@ $data['event'] = [
 ];
 ```
 Now, binding `event.title` in the Template Designer will resolve automatically.
+
+---
+
+## Related Guides & References
+
+- **[Product Overview & 2-JSON Data Fusion Engine](./01-overview.md)** — Architectural introduction and JSON schema details.
+- **[Scripting Language Syntax](./04-template-scripting-language-syntax.md)** — Writing conditional logic and formula expressions.
+- **[Frontend Module Architecture](./05-frontend-module-architecture.md)** — Visual editor component layout.
+

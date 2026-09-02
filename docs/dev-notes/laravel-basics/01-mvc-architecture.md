@@ -28,16 +28,18 @@ sequenceDiagram
 
 ---
 
-## 🛠️ MVC in Action (`pgy_project`)
+## 🛠️ MVC in Action
 
 Let's look at how a post page load happens in our actual app:
 
-### 1. Route Definition ([`routes/web.php`](file:///c:/Users/User/Desktop/My%20Coding%20Projects/pgy_project/routes/web.php))
+![MVC Application Web Page Output](../../placeholder.jpg)
+
+### 1. Route Definition (`routes/web.php`)
 ```php
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 ```
 
-### 2. Controller Handler ([`PostController.php`](file:///c:/Users/User/Desktop/My%20Coding%20Projects/pgy_project/app/Http/Controllers/PostController.php#L18-L44))
+### 2. Controller Handler (`app/Http/Controllers/PostController.php`)
 ```php
 public function show(Post $post)
 {
@@ -49,7 +51,7 @@ public function show(Post $post)
 }
 ```
 
-### 3. Eloquent Model ([`Post.php`](file:///c:/Users/User/Desktop/My%20Coding%20Projects/pgy_project/app/Models/Post.php))
+### 3. Eloquent Model (`app/Models/Post.php`)
 Represents the `posts` table in database. Handles casting, attributes, and relationships.
 
 ### 4. Blade View (`resources/views/circle/profile-post-show.blade.php`)
@@ -57,7 +59,16 @@ Renders dynamic HTML using variables `$post` and `$event` provided by the contro
 
 ---
 
-## 💡 Junior Dev Takeaway
+## 💡 Key Development Rules
 - **Never put database queries directly inside Blade views.**
 - **Never put HTML directly inside Controllers.**
 - Keep responsibilities separated so our code stays clean and maintainable!
+
+---
+
+## Related Guides & References
+
+- **[02 - Routing and Controllers](./02-routing-and-controllers.md)** — HTTP request handling and controller methods.
+- **[03 - Eloquent and Models](./03-eloquent-and-models.md)** — Database mapping and Eloquent relations.
+- **[04 - Blade Templating](./04-blade-templating.md)** — Frontend Blade views and layout inheritance.
+

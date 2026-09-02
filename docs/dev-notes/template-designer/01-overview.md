@@ -4,7 +4,7 @@ The Template Designer is a visual drag-and-drop editor and dynamic document rend
 
 ---
 
-## The 2-JSON Fusion Architecture
+## 1. The 2-JSON Fusion Architecture
 
 The engine operates by **fusing two independent JSON structures** at render time to produce pixel-perfect HTML/PDF output:
 
@@ -17,9 +17,21 @@ graph LR
 
 ---
 
-## Concrete Data Fusion Example
+## 2. Visual Drag-and-Drop Interface & Preview
 
-### 1. JSON #1: Template Layout Schema (Saved by Canvas Editor)
+Authors work within a visual canvas editor:
+
+![Visual Canvas Drag-and-Drop Editor](../../placeholder.jpg)
+
+After data hydration, the output renders dynamically in the browser or generates a PDF document:
+
+![Hydrated Certificate Output Preview](../../placeholder.jpg)
+
+---
+
+## 3. Concrete Data Fusion Example
+
+### JSON #1: Template Layout Schema (Saved by Canvas Editor)
 ```json
 {
   "pages": [
@@ -45,7 +57,7 @@ graph LR
 }
 ```
 
-### 2. JSON #2: Runtime System Context Data (Fetched from Database)
+### JSON #2: Runtime System Context Data (Fetched from Database)
 ```json
 {
   "user": {
@@ -70,10 +82,19 @@ graph LR
 
 ---
 
-## Key Capabilities
+## 4. Key Capabilities
 
 - **Visual Canvas**: Position text boxes, images, badges, lines, shapes, and placeholders on standard A4 paper layouts (Portrait or Landscape).
 - **Universal Tag ID System (`$ID`)**: Assign unique element tags (`$A`, `$scoreTag`, `$statusBadge`) to reference elements in formulas and script rules.
 - **Dynamic Data Binding (`@var`)**: Type `@` in the editor to bind system fields (`@user.name`, `@user.score`).
 - **Math & String Formula Engine**: Built-in math calculator (`@user.level * 2`) and string concatenation (`Str($A) + " - Level " + Str(@user.level)`).
 - **Script Tool Engine**: Write conditional `if / else` logic directly in the editor to dynamically control element visibility and styles during output generation (`HIDE`, `SHOW`, `SET COLOR`, `SET BGCOLOR`, `SET VALUE`).
+
+---
+
+## 5. Related Documentation & Guides
+
+- **[Architecture & Data Placeholders](./02-architecture-and-data-placeholders.md)** — In-depth breakdown of element types and data binding.
+- **[Scripting Language Syntax](./04-template-scripting-language-syntax.md)** — Complete syntax guide for conditional commands (`HIDE`, `SHOW`, `SET COLOR`).
+- **[HTML Template Renderer vs DOCX Preview](../document-rendering/01-renderer-vs-docx-preview.md)** — Comparing HTML canvas rendering with PHPWord docx previews.
+

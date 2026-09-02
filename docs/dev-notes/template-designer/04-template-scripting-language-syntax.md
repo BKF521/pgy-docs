@@ -4,7 +4,15 @@ The Template Designer includes an integrated domain-specific scripting language 
 
 ---
 
-## 1. Syntax Overview & Grammar Rules
+## 1. Visual Script Editor Modal
+
+Authors can compose and test conditional script rules directly in the canvas editor:
+
+![Scripting Language Editor Modal](../../placeholder.jpg)
+
+---
+
+## 2. Syntax Overview & Grammar Rules
 
 ### Case Sensitivity
 - **Keywords & Commands**: **Case-Insensitive** (`if`, `IF`, `else`, `HIDE`, `hide`, `SET`, `set`, `COLOR`, `color`, `AND`, `and`, `OR`, `or`).
@@ -15,7 +23,7 @@ The Template Designer includes an integrated domain-specific scripting language 
 
 ---
 
-## 2. Condition Operators (`AND`, `OR`, Comparison)
+## 3. Condition Operators (`AND`, `OR`, Comparison)
 
 ### Logical Operators
 Both English keywords and standard programming symbols are fully supported:
@@ -39,7 +47,7 @@ Both English keywords and standard programming symbols are fully supported:
 
 ---
 
-## 3. Variables: System Fields, Canvas Tag IDs & Group Tag IDs
+## 4. Variables: System Fields, Canvas Tag IDs & Group Tag IDs
 
 | Variable Type | Prefix | Description | Example |
 | :--- | :--- | :--- | :--- |
@@ -49,7 +57,7 @@ Both English keywords and standard programming symbols are fully supported:
 
 ---
 
-## 4. Supported Action Commands
+## 5. Supported Action Commands
 
 Commands execute inside the `{ ... }` block when condition evaluates to `true`:
 
@@ -82,7 +90,7 @@ SET $ElementTagID VALUE "Custom Text Message"
 
 ---
 
-## 5. Complete Scripting Example
+## 6. Complete Scripting Example
 
 ```js
 if (@appointment.status == "accepted") {
@@ -97,3 +105,12 @@ if (@appointment.status == "accepted") {
   SET $signStatus VALUE "Pending Signature"
 }
 ```
+
+---
+
+## 7. Related Documentation & Guides
+
+- **[Product Overview & 2-JSON Data Fusion Engine](./01-overview.md)** — Architecture and runtime execution flow.
+- **[Architecture & Data Placeholders](./02-architecture-and-data-placeholders.md)** — Dot-notation resolution matrix.
+- **[Frontend Module Architecture](./05-frontend-module-architecture.md)** — Autocomplete script integration details.
+

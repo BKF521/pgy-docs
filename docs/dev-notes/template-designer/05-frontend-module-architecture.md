@@ -4,28 +4,35 @@ This guide documents the modular ES6 JavaScript architecture of the Canvas Templ
 
 ---
 
-## 1. Overview & Directory Structure
+## 1. Modular Architecture Overview
 
 To maintain high code quality and scalability, the Template Designer frontend is split into 11 ES6 modules compiled via Vite/Laravel Mix:
 
-```text
-resources/js/designer/
-├── index.js          # Master entry point & initialization
-├── state.js          # Global state management & element registry
-├── canvas.js         # Canvas rendering, drag/resize handlers, selection logic
-├── properties.js     # Inspector cards & property inputs
-├── layers.js         # Layer tree dock, group folders, drag-reordering
-├── autocomplete.js   # Context-aware dual symbol (@ and $) popups
-├── history.js        # Undo/Redo state stack
-├── keyboard.js       # Hotkeys & keyboard shortcuts (Del, Ctrl+Z, Tab)
-├── context-menu.js   # Canvas & Layer right-click context menus
-├── save.js           # Firebase state serialization & network calls
-└── zoom.js           # Canvas zoom & stage pan controls
+```mermaid
+flowchart TD
+    Index["index.js (Master Entry)"] --> State["state.js (Global State Manager)"]
+    Index --> Canvas["canvas.js (Canvas Engine & Interactions)"]
+    Index --> Props["properties.js (Inspector Panels)"]
+    Index --> Layers["layers.js (Layers & Group Dock)"]
+    Index --> Auto["autocomplete.js (@ and $ Popups)"]
+    Index --> Hist["history.js (Undo/Redo Stack)"]
+    Index --> Key["keyboard.js (Hotkeys & Del/Tab)"]
+    Index --> Menu["context-menu.js (Right-Click Menus)"]
+    Index --> Save["save.js (Firebase Serialization)"]
+    Index --> Zoom["zoom.js (Stage Zoom & Pan)"]
 ```
 
 ---
 
-## 2. Module Responsibilities
+## 2. Visual Interface Layout
+
+The modular JavaScript architecture powers the visual drag-and-drop editor workspace:
+
+![Frontend Editor Canvas Interface](../../placeholder.jpg)
+
+---
+
+## 3. Module Responsibilities
 
 ### `index.js` (Master Entry Point)
 Initializes global event listeners, bootstraps the editor DOM, loads initial template JSON data, and binds toolbar buttons.
@@ -62,3 +69,12 @@ Pushes state snapshots to `historyStack` on element mutations. Supports `undo()`
 
 ### `save.js` (Firebase Serialization)
 Serializes the current canvas state into the 2-JSON Layout Schema format and transmits payload updates to Firebase Realtime Database / Laravel backend APIs.
+
+---
+
+## 4. Related Documentation & Guides
+
+- **[Product Overview & 2-JSON Data Fusion Engine](./01-overview.md)** — Architectural design and data fusion pipeline.
+- **[Reusable Component & Package Architecture](./03-reusable-package-architecture.md)** — Integrating the frontend module into host controllers.
+- **[Scripting Language Syntax](./04-template-scripting-language-syntax.md)** — Integrated conditional tool syntax.
+
