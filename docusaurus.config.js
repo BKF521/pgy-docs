@@ -2,7 +2,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 
 const config = {
-  title: 'Project Documentation',
+  title: 'PGY Docs',
   tagline: 'User guides, developer documentation, and module specifications',
   favicon: 'img/favicon.ico',
 
@@ -46,7 +46,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Project Docs',
+        title: '',
         logo: {
           alt: 'Project Logo',
           src: 'img/logo.png',
@@ -58,13 +58,13 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'docsSidebar',
             position: 'left',
-            label: 'Documentation',
+            label: '系统使用指南',
           },
           {
             type: 'docSidebar',
             sidebarId: 'devNotesSidebar',
             position: 'left',
-            label: 'Dev Notes',
+            label: '开发者的笔记',
           },
         ],
       },
