@@ -1,0 +1,14 @@
+# Documentation AI Guidelines
+
+Refer to [AGENTS.md](./AGENTS.md) for full documentation standards.
+
+Quick Summary:
+1. **Workspace Hierarchy**: The parent directory is the real PHP Laravel application. Use it to check source code truth; do not hallucinate APIs.
+2. **Path Nesting**: Content `.md` files live in the Docusaurus content `docs/` folder (which may be at `docs/docs/` or `pgy-docs/docs/` depending on local setup). Always use relative paths for images/links.
+3. **Audience Differentiation**:
+   - `dev-notes/`: Technical details, code snippets, backend/frontend architecture. Written in English.
+   - User guides (`arp/`, `am/`, `ma/`, etc.): Simple non-technical language for non-tech savvy users. Written in Simplified Chinese.
+4. **Visuals & Tables**:
+   - NO ASCII/text block charts. Use Mermaid (` ```mermaid `) or standard Markdown tables.
+   - Allocate `placeholder.jpg` using relative paths at specific UI step sections (NOT just a single banner picture at the top).
+5. **DRY**: Use relative markdown cross-links instead of repeating information across docs.

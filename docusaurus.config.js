@@ -68,8 +68,10 @@ const config = {
           },
         ],
       },
-
-
+      metadata: [
+        {name: 'robots', content: 'noindex, nofollow'},
+        {name: 'googlebot', content: 'noindex, nofollow'}
+      ],
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
