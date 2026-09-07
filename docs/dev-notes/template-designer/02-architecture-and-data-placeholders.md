@@ -120,6 +120,7 @@ Now, binding `event.title` in the Template Designer will resolve automatically.
 ## Related Guides & References
 
 - **[Product Overview & 2-JSON Data Fusion Engine](./01-overview.md)** — Architectural introduction and JSON schema details.
+- **[List Data & Repeater Elements](./09-list-data-and-repeater-elements.md)** — Document detail columns, DataList, ImageList, and ExprList.
 - **[Scripting Language Syntax](./04-template-scripting-language-syntax.md)** — Writing conditional logic and formula expressions.
 - **[Frontend Module Architecture](./05-frontend-module-architecture.md)** — Visual editor component layout.
 

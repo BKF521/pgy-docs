@@ -34,16 +34,20 @@ Both English keywords and standard programming symbols are fully supported:
 | **OR** | `OR`, `or`, `\|\|` | `@user.level == "Gold" OR @user.stats.points > 100` |
 | **NOT** | `!`, `NOT` | `!(@appointment.status == "declined")` |
 
-### Comparison Operators
+### Comparison & Pattern Matching Operators
 
 | Operator | Meaning | Example |
 | :--- | :--- | :--- |
-| `==` | Equals | `@appointment.status == "accepted"` |
-| `!=` | Not Equals | `@appointment.status != "pending"` |
+| `==` / `IS` | Equals | `@appointment.status == "accepted"` or `@user.role IS "Lead"` |
+| `!=` / `IS NOT` | Not Equals | `@appointment.status != "pending"` |
 | `>` | Greater Than | `@user.stats.points > 50` |
 | `>=` | Greater Than or Equal | `@user.stats.points >= 50` |
 | `<` | Less Than | `@user.stats.points < 10` |
 | `<=` | Less Than or Equal | `@user.stats.points <= 10` |
+| `LIKE` | SQL Pattern Matching (`%` wildcard) | `@appointment.email LIKE "%@gmail.com"` |
+| `NOT LIKE` | SQL Negated Pattern Matching | `@appointment.code NOT LIKE "TMP%"` |
+| `IS NULL` / `IS EMPTY` | Check if variable is null or empty string | `@appointment.ic_num IS NULL` |
+| `IS NOT NULL` / `IS NOT EMPTY` | Check if variable has a valid value | `@appointment.signature IS NOT NULL` |
 
 ---
 
@@ -112,5 +116,6 @@ if (@appointment.status == "accepted") {
 
 - **[Product Overview & 2-JSON Data Fusion Engine](./01-overview.md)** — Architecture and runtime execution flow.
 - **[Architecture & Data Placeholders](./02-architecture-and-data-placeholders.md)** — Dot-notation resolution matrix.
+- **[List Data & Repeater Elements](./09-list-data-and-repeater-elements.md)** — DataList, ImageList, and SKIP VALUE IF rules.
 - **[Frontend Module Architecture](./05-frontend-module-architecture.md)** — Autocomplete script integration details.
 

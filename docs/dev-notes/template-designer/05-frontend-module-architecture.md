@@ -1,80 +1,93 @@
-# Frontend ES6 Module Architecture
+# Frontend React + TypeScript Module Architecture
 
-This guide documents the modular ES6 JavaScript architecture of the Canvas Template Designer located in `resources/js/designer/`.
+This guide documents the React and TypeScript architecture of the Canvas Template Designer located in `resources/js/designer/`.
 
 ---
 
-## 1. Modular Architecture Overview
-
-To maintain high code quality and scalability, the Template Designer frontend is split into 11 ES6 modules compiled via Vite/Laravel Mix:
+## 1. Module Map
 
 ```mermaid
 flowchart TD
-    Index["index.js (Master Entry)"] --> State["state.js (Global State Manager)"]
-    Index --> Canvas["canvas.js (Canvas Engine & Interactions)"]
-    Index --> Props["properties.js (Inspector Panels)"]
-    Index --> Layers["layers.js (Layers & Group Dock)"]
-    Index --> Auto["autocomplete.js (@ and $ Popups)"]
-    Index --> Hist["history.js (Undo/Redo Stack)"]
-    Index --> Key["keyboard.js (Hotkeys & Del/Tab)"]
-    Index --> Menu["context-menu.js (Right-Click Menus)"]
-    Index --> Save["save.js (Firebase Serialization)"]
-    Index --> Zoom["zoom.js (Stage Zoom & Pan)"]
+    Main["main.tsx\nReact Root & App Bootstrap"] --> App["App.tsx\nLayout Shell & State Bridge"]
+
+    App --> FontLoader["FontLoader.tsx\nAuto-injects Google Fonts\n& @font-face from fonts.ts"]
+    App --> TopBar["Toolbar.tsx\nTools, Undo/Redo, Page Manager, Preview/Save"]
+    App --> Props["PropertyInspector.tsx\nInspector Panels & Schema Binding"]
+    App --> LayerDock["LayerPanel.tsx\nLayer Tree, Multi-select, Grouping"]
+    App --> PageDock["PageDock.tsx\nMulti-Page Thumbnails & Actions"]
+    App --> Canvas["canvas.ts\nCanvas Engine & Interactions"]
+
+    App --> Store["store.ts\nReact State Bridge & Pub/Sub"]
+    Store --> State["state.ts\nCore Engine State"]
+
+    Canvas --> Auto["autocomplete.ts\n@ and $ Popups"]
+    Canvas --> Key["keyboard.ts\nHotkeys, Multi-Select, Undo/Redo"]
+    Canvas --> Menu["context-menu.ts\nSingle & Multi-Element Actions"]
+    Canvas --> Save["save.ts\nFirebase & Server Serialization"]
+    Canvas --> Zoom["zoom.ts\nSmooth Stage Zoom & Pan"]
+
+    Fonts["fonts.ts\nFont Registry (single source of truth)"] --> FontLoader
+    Fonts --> Props
 ```
 
 ---
 
-## 2. Visual Interface Layout
+## 2. Component & Module Responsibilities
 
-The modular JavaScript architecture powers the visual drag-and-drop editor workspace:
+### `main.tsx` & `App.tsx` (React Root Shell)
+Mounts the React application into `#template-designer-root`, initializes global listeners, and connects all panels.
 
-![Frontend Editor Canvas Interface](../../placeholder.jpg)
+### `FontLoader.tsx` (Automatic Font Injector)
+Reads `FONT_GROUPS` from `fonts.ts` at runtime and injects:
+- A `<link>` tag to Google Fonts CDN for all Google-hosted fonts
+- A `<style>` block with `@font-face` rules for self-hosted fonts (e.g. `思源宋体 Bold`)
+
+**To add a font:** edit `fonts.ts` only — no blade files need to be touched for the designer.
+
+### `fonts.ts` (Font Registry)
+Single source of truth for available canvas fonts. Each entry declares:
+- `label` — dropdown display name
+- `value` — CSS `font-family` string stored in Firebase
+- `googleFamily` — (optional) Google Fonts family query segment
+- `fontFace` — (optional) self-hosted font config (`src`, `format`, `weight`, `style`)
+
+### `PropertyInspector.tsx` (Inspector Panel & Variable Binding)
+Reads the selected canvas element and renders:
+- **System Variable binding**: Scalar data field dropdown for `placeholder` elements.
+- **List Data binding**: List fields dropdown for `dataGrid` (`DataList`) and `imageGrid` (`ImageList`).
+- **Typography card**: Font family (dropdown rendered from `fonts.ts`), size, alignment, bold/italic, color (applies to `text`, `placeholder`, `variable`, `dataGrid`, and `expressionGrid`).
+- **Variable & List expressions**: Formula inputs and modal dialog launcher for `variable` and `expressionGrid` (`ExprList`).
+- **Grid Layout controls**: Flow direction (`LR`, `RL`, `TD`, `DT`), item gap, auto wrap, item dimensions, and `Filter Value` modal.
+- **Fill & Border controls**: Background color, solid vs transparent toggle, border width (px), and border color.
+
+Font dropdown uses fuzzy matching (`matchFontOption()` from `fonts.ts`) to resolve browser-normalized `font-family` strings back to their canonical option value.
+
+### `LayerPanel.tsx` (Layers & Group Dock)
+- Multi-element selection and bulk grouping/deletion.
+- Layer reordering via drag-and-drop.
+- Group folders, locking, and visibility toggling.
+- **Layer Renaming**: Double-clicking any layer item opens the rename dialog. Context-menu rename captures the target element reliably before prompting.
+- Context menu with viewport boundary clamping and scroll-tracking.
+
+### `canvas.ts` (Canvas Engine)
+Handles DOM canvas interactions:
+- Element creation, selection, bounding box, multi-point resize handles.
+- Dragging, keyboard nudging (with Shift acceleration), canvas coordinate math.
+- Element types: `text`, `image`, `dataImage`, `placeholder`, `variable`, `imageGrid`, `dataGrid`, `expressionGrid`, `line`, `rectangle`, `circle`.
+- **Default 0px Borders**: All objects default to 0px borders (`0 solid transparent`).
+- Double-clicking `variable` or `expressionGrid` elements opens the Expression Editor.
+
+Text (`textarea`) elements are editable on click. Variable, DataList, and Expression elements are live-previewed on canvas and evaluated at render time.
+
+### `save.ts` (Serialization & Load Engine)
+- Serializes multi-page state to JSON (Firebase Realtime DB + Laravel save API).
+- Serializes custom layer names (`name`), grid layout parameters (`layoutOrder`, `autoWrap`, `itemGap`, `itemWidth`, `itemHeight`), filter rules (`skipRules`), and typography attributes (`text`).
+- Undo/Redo history stack with non-disorienting view retention.
 
 ---
 
-## 3. Module Responsibilities
-
-### `index.js` (Master Entry Point)
-Initializes global event listeners, bootstraps the editor DOM, loads initial template JSON data, and binds toolbar buttons.
-
-### `state.js` (State Manager)
-Maintains global application variables (`window.elements`, `window.pages`, `window.selectedElement`, `window.historyStack`). Provides helper getters and setters.
-
-### `canvas.js` (Canvas Engine)
-Handles HTML5 canvas interactions:
-- Element selection, bounding box calculations, resize handles (N, S, E, W, NE, NW, SE, SW).
-- Drag movement with grid snapping.
-- Rendering element nodes (Text, Image, Placeholder Variable, Signature, Line, Rectangle, Circle).
-
-### `properties.js` (Inspector Panels)
-Binds canvas selection to the right-hand Inspector Panel:
-- Typography (Font Family, Size, Weight, Alignment, Color).
-- Fill & Stroke (Background Color, Border Width, Border Color, Opacity).
-- Data Field Mapping & Math Formulas (`dataField`, `expr`).
-- Canvas Element Tag ID (`$TagID`).
-
-### `layers.js` (Layers & Group Folders)
-Manages the left-side Layer Dock:
-- Reordering layers via HTML5 Drag and Drop API.
-- Group Folder creation, collapse/expand states, and Group Tag IDs.
-- Visibility toggling (Eye icon) and Lock/Unlock state.
-
-### `autocomplete.js` (Dual Symbol Autocomplete)
-Monitors input fields and textareas for `@` and `$` triggers:
-- Typing `@`: Populates available system variables from `window.AVAILABLE_SYSTEM_VARIABLES`.
-- Typing `$`: Populates canvas element Tag IDs (`$A`, `$scoreBadge`) and Group Tag IDs (`$headerFolder`).
-
-### `history.js` (Undo/Redo Stack)
-Pushes state snapshots to `historyStack` on element mutations. Supports `undo()` and `redo()` actions via `Ctrl+Z` / `Ctrl+Y`.
-
-### `save.js` (Firebase Serialization)
-Serializes the current canvas state into the 2-JSON Layout Schema format and transmits payload updates to Firebase Realtime Database / Laravel backend APIs.
-
----
-
-## 4. Related Documentation & Guides
+## 3. Related Documentation & Guides
 
 - **[Product Overview & 2-JSON Data Fusion Engine](./01-overview.md)** — Architectural design and data fusion pipeline.
 - **[Reusable Component & Package Architecture](./03-reusable-package-architecture.md)** — Integrating the frontend module into host controllers.
 - **[Scripting Language Syntax](./04-template-scripting-language-syntax.md)** — Integrated conditional tool syntax.
-
